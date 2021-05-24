@@ -1,6 +1,7 @@
 # ez_portfolio
 
 A crypto portfolio tracker app I made because I needed something simple.
+
 I add features as I need them that's why some basic functionalities are missing.
 For example you can't delete a position, you can add negative amounts as a workaround but if you decide to add to the same holding again your avarage price will be miscalculated and your PNL will be wrong.
 
