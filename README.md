@@ -1,16 +1,13 @@
 # ez_portfolio
 
-A new Flutter application.
+A crypto portfolio tracker app I made because I needed something simple.
 
-## Getting Started
+I add features as I need them that's why some basic functionalities are missing.
+For example you can't delete a position, you can add negative amounts as a workaround but if you decide to add to the same holding again your avarage price will be miscalculated and your PNL will be wrong.
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Some issues I am aware of:
+ - If you are running the app for the first time, you have to open the app twice because of JSON save-file being missing.
+ - We get the coins from CoinGecko but we get the graph data from Binance, if a coin is on CoinGecko but not on Binance graph component will be missing.
+ - If you have a six figures portfolio some texts overflow. At least on my phone and Pixel 3.
+ - Some of the coins website address gets broken in the attempt of simplification. Easy fix: Remove simplification.
+ - Lack of optimization.
