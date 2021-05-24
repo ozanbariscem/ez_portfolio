@@ -6,18 +6,6 @@ I add features as I need them that's why some basic functionalities are missing.
 For example you can't delete a position, you can add negative amounts as a workaround but if you decide to add to the same holding again your avarage price will be miscalculated and your PNL will be wrong.
 
 
-Screenshots:
-![splash](https://github.com/ozanbariscem/ez_portfolio/blob/master/screenshots/splash.jpg)
-
-![empty portfolio](https://github.com/ozanbariscem/ez_portfolio/blob/master/screenshots/empty_portfolio.jpg)
-
-![portfolio](https://github.com/ozanbariscem/ez_portfolio/blob/master/screenshots/portfolio.jpg)
-
-![search view](https://github.com/ozanbariscem/ez_portfolio/blob/master/screenshots/search_view.jpg)
-
-![asset view](https://github.com/ozanbariscem/ez_portfolio/blob/master/screenshots/asset_view.jpg)
-
-
 Some issues I am aware of:
  - If you are running the app for the first time, you have to open the app twice because of JSON save-file being missing.
  - We get the coins from CoinGecko but we get the graph data from Binance, if a coin is on CoinGecko but not on Binance graph component will be missing.
