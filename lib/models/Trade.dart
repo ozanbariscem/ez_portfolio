@@ -28,7 +28,7 @@ class Trade {
     String directory = await localPath();
     File file = File('$directory/trades.txt');
     if (!(await file.exists())) {
-      file.create();
+      await file.create();
     }
     return file;
   }
