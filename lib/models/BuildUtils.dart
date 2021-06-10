@@ -13,6 +13,17 @@ class BuildUtils {
   static Color red = Colors.red.shade800;
   static Color white = Colors.white;
 
+  static TextStyle elevatedButtonTextStyle({
+    BuildContext context,
+    double fontSize: 0.02,
+    FontWeight fontWeight: FontWeight.normal,}) {
+      return TextStyle(
+        fontSize: MediaQuery.of(context).size.height * fontSize,
+        fontWeight: fontWeight,
+        color: backgroundColor,
+    );
+  }
+
   static TextStyle linkTextStyle(
       {BuildContext context,
       double fontSize: 0.02,

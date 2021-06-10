@@ -20,17 +20,22 @@ class AssetView extends StatefulWidget {
 }
 
 class _AssetView extends State<AssetView> {
+  TextEditingController _priceEditController;
+  TextEditingController _amountEditController;
+  FocusNode _amountEditFocus;
+
   bool gotData;
   bool gotKline;
 
   bool enterTrade;
 
-  double amount = 0;
-  double price = 0;
-
   @override
   void initState() {
     super.initState();
+    _priceEditController = new TextEditingController(text: '');
+    _amountEditController = new TextEditingController(text: '');
+    _amountEditFocus = FocusNode();
+
     gotData = false;
     gotKline = false;
     enterTrade = false;
@@ -72,6 +77,34 @@ class _AssetView extends State<AssetView> {
       gotKline = true;
       setState(() {});
     });
+  }
+
+  void newTrade(asset, [isBuy = true]) {
+    var amount = double.tryParse(_amountEditController.text);
+    var price = double.tryParse(_priceEditController.text);
+    if (amount != null && price != null &&
+        amount > 0 && price > 0) {
+      if (!isBuy) {
+        amount = -amount;
+      }
+      Trade trade = Trade(
+        id: asset.id,
+        amount: amount,
+        price: price,
+      );
+
+      if (!Portfolio.portfolio.trades.containsKey(asset.id)) {
+        print('Added to trades of assets');
+        Portfolio.portfolio.trades[asset.id] = [];
+        asset.trades = Portfolio.portfolio.trades[asset.id];
+      }
+      Portfolio.portfolio.trades[asset.id].add(trade);
+      Portfolio.portfolio.setAssetFromTrades(asset.id);
+
+      Trade.writeTradesToFile(Portfolio.portfolio);
+    } else {
+      print('Raise input was invalid!');
+    }
   }
 
   Widget buildSummaryCard(Asset asset) {
@@ -259,31 +292,39 @@ class _AssetView extends State<AssetView> {
                         icon: Icon(EvaIcons.plus),
                         onPressed: () {
                           setState(() {
+                            _priceEditController.text = widget.asset.price.toString();
+                            _amountEditFocus.requestFocus();
                             enterTrade = !enterTrade;
                           });
                         }, )]
                   ),
                   BuildUtils.buildEmptySpaceHeight(context, 0.01),
                   enterTrade ? buildNewTrade(asset) : BuildUtils.buildEmptySpaceHeight(context, 0.00),
+                  Divider(color: Colors.grey),
                   ListView.builder(
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     itemCount: widget.asset.trades.length,
                     itemBuilder: (context, i) {
-                      return Row(
+                      return Column(
                         children: [
-                          Text(
-                              widget.asset.trades[i].amount.abs().toString() + ' ' +
-                              widget.asset.symbol.toUpperCase(),
-                              style: BuildUtils.headerTextStyle(
-                                  context, 0.03, FontWeight.normal)),
-                          Text(
-                            (widget.asset.trades[i].amount >= 0 ? ' bought at ' : ' sold at '),
-                            style: BuildUtils.pnlTextStyle(context, widget.asset.trades[i].amount >= 0)),
-                          Text(
-                              widget.asset.trades[i].price.toString(),
-                              style: BuildUtils.headerTextStyle(
-                                  context, 0.03, FontWeight.normal))
+                          Row(
+                            children: [
+                              Text(
+                                  widget.asset.trades[i].amount.abs().toString() + ' ' +
+                                      widget.asset.symbol.toUpperCase(),
+                                  style: BuildUtils.headerTextStyle(
+                                      context, 0.02, FontWeight.normal)),
+                              Text(
+                                  (widget.asset.trades[i].amount >= 0 ? ' bought at ' : ' sold at '),
+                                  style: BuildUtils.pnlTextStyle(context, widget.asset.trades[i].amount >= 0, 0.02)),
+                              Text(
+                                  widget.asset.trades[i].price.toString(),
+                                  style: BuildUtils.headerTextStyle(
+                                      context, 0.02, FontWeight.normal)),
+                            ],
+                          ),
+                          Divider(color: Colors.grey)
                         ],
                       );
                     },
@@ -300,59 +341,45 @@ class _AssetView extends State<AssetView> {
             height: MediaQuery.of(context).size.height * .05,
             child: TextField(
               obscureText: false,
+              controller: _amountEditController,
+              focusNode: _amountEditFocus,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Amount',
               ),
-              onChanged: (value) {
-                if (value == "")
-                  amount = 0;
-                else
-                  amount = double.tryParse(value);
-                print(amount);
-              },
             )),
         Container(
             width: MediaQuery.of(context).size.width * .30,
             height: MediaQuery.of(context).size.height * .05,
             child: TextField(
               obscureText: false,
+              controller: _priceEditController,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: 'Price',
               ),
-              onChanged: (value) {
-                if (value == "")
-                  price = 0;
-                else
-                  price = double.tryParse(value);
-              },
             )),
-        TextButton(
+        ElevatedButton(
             onPressed: () {
-              if (amount != null && price != null) {
-                Trade trade = Trade(
-                  id: asset.id,
-                  amount: amount,
-                  price: price,
-                );
-
-                if (!Portfolio.portfolio.trades.containsKey(asset.id)) {
-                  print('Added to trades of assets');
-                  Portfolio.portfolio.trades[asset.id] = [];
-                  asset.trades = Portfolio.portfolio.trades[asset.id];
-                }
-                Portfolio.portfolio.trades[asset.id].add(trade);
-                Portfolio.portfolio.setAssetFromTrades(asset.id);
-
-                Trade.writeTradesToFile(Portfolio.portfolio);
-              } else {
-                print('Raise input was invalid!');
-              }
+              newTrade(asset);
             },
+            style: ElevatedButton.styleFrom(
+              primary: BuildUtils.green,
+            ),
             child: Text(
-              'Add',
-              style: BuildUtils.headerTextStyle(context),
+              'Buy',
+              style: BuildUtils.elevatedButtonTextStyle(context: context),
+            )),
+        ElevatedButton(
+            onPressed: () {
+              newTrade(asset, false);
+            },
+            style: ElevatedButton.styleFrom(
+              primary: BuildUtils.red,
+            ),
+            child: Text(
+              'Sell',
+              style: BuildUtils.elevatedButtonTextStyle(context: context),
             ))
       ],
     );
