@@ -102,6 +102,7 @@ class _AssetView extends State<AssetView> {
       Portfolio.portfolio.setAssetFromTrades(asset.id);
 
       Trade.writeTradesToFile(Portfolio.portfolio);
+      setState(() { });
     } else {
       print('Raise input was invalid!');
     }
