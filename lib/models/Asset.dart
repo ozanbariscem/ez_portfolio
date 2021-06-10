@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import "package:intl/intl.dart";
 import 'package:http/http.dart' as http;
 import 'Kline.dart';
 import 'Language.dart';
@@ -184,15 +185,9 @@ class Asset {
   }
 
   static String valueToText(double value) {
-    // TODO: In the case of value being bigger than some certain value
-    // TODO: like > 1.000.000, display 1.23M instead of 1.230.000
-    String text = value.toString();
-    int index = text.indexOf('.');
-    int precision = 3;
-    if (text.length < index + 3) {
-      precision = 2;
-    }
-    text = text.substring(0, text.indexOf('.') + precision);
-    return text;
+    return NumberFormat.compactCurrency(
+      decimalDigits: 2,
+      symbol: '',
+    ).format(value);
   }
 }

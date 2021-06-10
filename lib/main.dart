@@ -67,7 +67,7 @@ class _MyHomePageState extends State<MyHomePage> {
       gotPortfolio = value;
       if (gotPortfolio) {
         print('Got portfolio');
-        portfolio.getAssetDatas().then((value) {
+        portfolio.getAssetData().then((value) {
           print('Got data');
           gotData = value;
           if (value)
@@ -78,7 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<void> _refresh() async {
-    await portfolio.getAssetDatas();
+    await portfolio.getAssetData();
     setState(() {});
   }
 

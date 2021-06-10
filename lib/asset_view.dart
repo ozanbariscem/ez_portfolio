@@ -181,7 +181,7 @@ class _AssetView extends State<AssetView> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
                           Text(
-                            '\$${asset.price}',
+                            '\$${Asset.valueToText(asset.price)}',
                             style: BuildUtils.headerTextStyle(
                                 context, 0.035, FontWeight.bold),
                           ),
@@ -197,14 +197,14 @@ class _AssetView extends State<AssetView> {
                       Text('Market Cap',
                           style: BuildUtils.headerTextStyle(
                               context, 0.018, FontWeight.bold)),
-                      Text('\$${asset.marketCap}',
+                      Text('\$${Asset.valueToText(asset.marketCap + 0.00)}',
                           style: BuildUtils.headerTextStyle(context, 0.018)),
                       BuildUtils.buildEmptySpaceHeight(context, 0.01),
                       Text('Circulating Supply',
                           style: BuildUtils.headerTextStyle(
                               context, 0.018, FontWeight.bold)),
                       Text(
-                          '${asset.circulatingSupply.toInt()} / ${asset.maxSupply == null ? '∞' : asset.maxSupply.toInt()}',
+                          '${Asset.valueToText(asset.circulatingSupply)} / ${asset.maxSupply == null ? '∞' : Asset.valueToText(asset.maxSupply)}',
                           style: BuildUtils.headerTextStyle(context, 0.018)),
                     ],
                   )
@@ -312,15 +312,15 @@ class _AssetView extends State<AssetView> {
                           Row(
                             children: [
                               Text(
-                                  widget.asset.trades[i].amount.abs().toString() + ' ' +
-                                      widget.asset.symbol.toUpperCase(),
+                                    Asset.valueToText(widget.asset.trades[i].amount.abs()) + ' ' +
+                                    widget.asset.symbol.toUpperCase(),
                                   style: BuildUtils.headerTextStyle(
                                       context, 0.02, FontWeight.normal)),
                               Text(
                                   (widget.asset.trades[i].amount >= 0 ? ' bought at ' : ' sold at '),
                                   style: BuildUtils.pnlTextStyle(context, widget.asset.trades[i].amount >= 0, 0.02)),
                               Text(
-                                  widget.asset.trades[i].price.toString(),
+                                  '\$' + Asset.valueToText(widget.asset.trades[i].price),
                                   style: BuildUtils.headerTextStyle(
                                       context, 0.02, FontWeight.normal)),
                             ],
