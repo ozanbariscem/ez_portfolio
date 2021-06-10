@@ -23,6 +23,8 @@ class _AssetView extends State<AssetView> {
   bool gotData;
   bool gotKline;
 
+  bool enterTrade;
+
   double amount = 0;
   double price = 0;
 
@@ -31,6 +33,7 @@ class _AssetView extends State<AssetView> {
     super.initState();
     gotData = false;
     gotKline = false;
+    enterTrade = false;
 
     if (Portfolio.portfolio.trades.containsKey(widget.asset.id))
       widget.asset.trades = Portfolio.portfolio.trades[widget.asset.id];
@@ -246,11 +249,45 @@ class _AssetView extends State<AssetView> {
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('Trade History',
-                      style: BuildUtils.headerTextStyle(
-                          context, 0.024, FontWeight.bold)),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('Trade History',
+                          style: BuildUtils.headerTextStyle(
+                              context, 0.024, FontWeight.bold)),
+                      IconButton(
+                        icon: Icon(EvaIcons.plus),
+                        onPressed: () {
+                          setState(() {
+                            enterTrade = !enterTrade;
+                          });
+                        }, )]
+                  ),
                   BuildUtils.buildEmptySpaceHeight(context, 0.01),
-                  buildNewTrade(asset),
+                  enterTrade ? buildNewTrade(asset) : BuildUtils.buildEmptySpaceHeight(context, 0.00),
+                  ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: widget.asset.trades.length,
+                    itemBuilder: (context, i) {
+                      return Row(
+                        children: [
+                          Text(
+                              widget.asset.trades[i].amount.abs().toString() + ' ' +
+                              widget.asset.symbol.toUpperCase(),
+                              style: BuildUtils.headerTextStyle(
+                                  context, 0.03, FontWeight.normal)),
+                          Text(
+                            (widget.asset.trades[i].amount >= 0 ? ' bought at ' : ' sold at '),
+                            style: BuildUtils.pnlTextStyle(context, widget.asset.trades[i].amount >= 0)),
+                          Text(
+                              widget.asset.trades[i].price.toString(),
+                              style: BuildUtils.headerTextStyle(
+                                  context, 0.03, FontWeight.normal))
+                        ],
+                      );
+                    },
+                  )
                 ])));
   }
 
