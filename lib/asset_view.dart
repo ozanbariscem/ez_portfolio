@@ -143,9 +143,7 @@ class _AssetView extends State<AssetView> {
                       BuildUtils.buildEmptySpaceHeight(context, 0.04),
                       InkWell(
                         child: Text(
-                          asset.page
-                              .replaceAll('https://', '')
-                              .replaceAll('/', ''),
+                          asset.page,
                           style: BuildUtils.linkTextStyle(
                             context: context,
                           ),
