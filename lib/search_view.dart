@@ -15,16 +15,26 @@ class SearchView extends StatefulWidget {
 
 class _SearchView extends State<SearchView> {
   Future<bool> gotData;
+  List searchResults;
+  bool isSearching;
 
   @override
   void initState() {
     super.initState();
-    gotData = Asset.getCoinsList(250);
+    searchResults = [];
+    isSearching = false;
+    // TODO: Add pagination
+    gotData = Asset.getCoinsList(2000);
   }
 
   Future<void> _refresh() async {
-    await Asset.getCoinsList(250);
+    await Asset.getCoinsList(2000);
     setState(() {});
+  }
+
+  Future<List> searchFor(String coinName) async {
+    return Asset.assetList.where((element) {
+      return element.name.toLowerCase().contains(coinName.toLowerCase());}).take(5).toList();
   }
 
   Widget buildAssetCard(Asset asset) {
@@ -64,7 +74,7 @@ class _SearchView extends State<SearchView> {
                   children: [
                     Row(
                       children: [
-                        Text('\$${Asset.valueToText(asset.price)}',
+                        Text('\$${asset.price}',
                             style: BuildUtils.headerTextStyle(context, 0.03, FontWeight.bold),),
                         Container(
                           alignment: Alignment.bottomCenter,
@@ -83,6 +93,67 @@ class _SearchView extends State<SearchView> {
               ],
             ),
           )),
+    );
+  }
+
+  Widget buildSearchCard() {
+    return Container(
+      height: MediaQuery.of(context).size.height * .06,
+      width: MediaQuery.of(context).size.width * .98,
+      decoration: BuildUtils.buildBoxDecoration(context),
+        child: Padding(
+        padding: EdgeInsets.all(MediaQuery.of(context).size.height * .01),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+                width: MediaQuery.of(context).size.width * .94,
+                height: MediaQuery.of(context).size.height * .05,
+                child: TextField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Coin name',
+                  ),
+                  onChanged: (text){
+                    isSearching = text != "";
+                    if (!isSearching) {
+                      setState(() { });
+                    } else {
+                      searchFor(text).then((result) {
+                        searchResults = result;
+                        setState(() { });
+                      });
+                    }
+                  },
+                )),
+          ],
+        ))
+    );
+  }
+
+  Widget buildSearchResult() {
+    var coinList = Asset.assetList;
+    if (isSearching) {
+      if (searchResults.length == 0)
+        return Text('Couldnt find coin with given name.');
+      else
+        coinList = searchResults;
+    }
+    return ListView.builder(
+      itemCount: coinList.length,
+      itemBuilder: (context, i) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            BuildUtils.buildEmptySpaceHeight(
+                context, 0.002),
+            buildAssetCard(coinList[i]),
+            BuildUtils.buildEmptySpaceHeight(
+                context, 0.002)
+          ],
+        );
+      },
     );
   }
 
@@ -110,19 +181,16 @@ class _SearchView extends State<SearchView> {
                     } else {
                       return RefreshIndicator(
                           onRefresh: _refresh,
-                          child: ListView.builder(
-                            itemCount: Asset.assetList.length,
-                            itemBuilder: (context, i) {
-                              return Column(
-                                children: [
-                                  BuildUtils.buildEmptySpaceHeight(
-                                      context, 0.002),
-                                  buildAssetCard(Asset.assetList[i]),
-                                  BuildUtils.buildEmptySpaceHeight(
-                                      context, 0.002)
-                                ],
-                              );
-                            },
+                          child: Column(
+                            children: [
+                              buildSearchCard(),
+                              BuildUtils.buildEmptySpaceHeight(context, 0.005),
+                              Container(
+                                height: MediaQuery.of(context).size.height * .82,
+                                // Listview.builder creates items in the list as we scroll down
+                                child : buildSearchResult()
+                              )
+                            ],
                           ));
                     }
                 }

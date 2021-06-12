@@ -181,7 +181,7 @@ class _AssetView extends State<AssetView> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
                           Text(
-                            '\$${Asset.valueToText(asset.price)}',
+                            '\$${asset.price}',
                             style: BuildUtils.headerTextStyle(
                                 context, 0.035, FontWeight.bold),
                           ),
@@ -261,7 +261,7 @@ class _AssetView extends State<AssetView> {
                           Text(
                               '${Asset.valueToText(asset.amount)} ${asset.symbol.toUpperCase()}',
                               style: BuildUtils.headerTextStyle(context, 0.02)),
-                          Text('\$${Asset.valueToText(asset.purchasingPrice)}',
+                          Text('\$${asset.purchasingPrice}',
                               style: BuildUtils.headerTextStyle(context, 0.02)),
                           Text('\$${Asset.valueToText(asset.pnl)}',
                               style: BuildUtils.pnlTextStyle(context,
@@ -320,7 +320,7 @@ class _AssetView extends State<AssetView> {
                                   (widget.asset.trades[i].amount >= 0 ? ' bought at ' : ' sold at '),
                                   style: BuildUtils.pnlTextStyle(context, widget.asset.trades[i].amount >= 0, 0.02)),
                               Text(
-                                  '\$' + Asset.valueToText(widget.asset.trades[i].price),
+                                  '\$' + widget.asset.trades[i].price.toString(),
                                   style: BuildUtils.headerTextStyle(
                                       context, 0.02, FontWeight.normal)),
                             ],

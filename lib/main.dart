@@ -277,7 +277,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                 ),
                                 DataCell(
                                   Text(
-                                    '\$${Asset.valueToText(data.price)}',
+                                    '\$${data.price}',
                                     style: BuildUtils.headerTextStyle(
                                         context, .018),
                                   ),
