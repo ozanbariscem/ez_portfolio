@@ -6,7 +6,7 @@ class BuildUtils {
   static Color backgroundColor = Colors.deepPurpleAccent[50];// Colors.blueGrey.shade200;
   static Color shadowColor = Colors.deepPurple[100];// Colors.blueGrey.shade500;
 
-  static Color linkTextColor = Colors.lightBlue.shade700;
+  static Color linkTextColor = barColor; // Colors.lightBlue.shade700;
   static Color headerTextColor = Colors.blueGrey.shade800;
 
   static Color green = Colors.lightGreen.shade800;
@@ -27,7 +27,7 @@ class BuildUtils {
   static TextStyle linkTextStyle(
       {BuildContext context,
       double fontSize: 0.02,
-      FontWeight fontWeight: FontWeight.normal,}) {
+      FontWeight fontWeight: FontWeight.normal}) {
     return TextStyle(
       fontSize: MediaQuery.of(context).size.height * fontSize,
       fontWeight: fontWeight,

@@ -9,8 +9,8 @@ import 'models/Portfolio.dart';
 import 'models/Language.dart';
 import 'models/BuildUtils.dart';
 
-import 'asset_view.dart';
-import 'search_view.dart';
+import 'view/asset_view.dart';
+import 'view/search_view.dart';
 
 void main() {
   runApp(MyApp());

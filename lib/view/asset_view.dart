@@ -6,9 +6,11 @@ import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_candlesticks/flutter_candlesticks.dart';
 
-import 'models/Asset.dart';
-import 'models/BuildUtils.dart';
-import 'models/Trade.dart';
+import '../models/Asset.dart';
+import '../models/BuildUtils.dart';
+import '../models/Trade.dart';
+
+import '../widget/asset_summary_card.dart';
 
 class AssetView extends StatefulWidget {
   final Asset asset;
@@ -110,104 +112,7 @@ class _AssetView extends State<AssetView> {
 
   Widget buildSummaryCard(Asset asset) {
     if (gotData == true || widget.asset.marketCap != null) {
-      return Container(
-          //height: MediaQuery.of(context).size.height * .18,
-          width: MediaQuery.of(context).size.width * .98,
-          decoration: BuildUtils.buildBoxDecoration(context),
-          child: Padding(
-              padding: EdgeInsets.all(MediaQuery.of(context).size.height * .015),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          Image.network(asset.image,
-                              width: MediaQuery.of(context).size.height * .035),
-                          BuildUtils.buildEmptySpaceWidth(context, .01),
-                          Text(
-                            asset.name,
-                            style: BuildUtils.headerTextStyle(
-                                context, 0.03, FontWeight.bold),
-                          )
-                        ],
-                      ),
-                      Text('Rank #${asset.marketCapRank}',
-                          style: BuildUtils.headerTextStyle(context, 0.015)),
-                      BuildUtils.buildEmptySpaceHeight(context, 0.04),
-                      InkWell(
-                        child: Text(
-                          asset.page,
-                          style: BuildUtils.linkTextStyle(
-                            context: context,
-                          ),
-                        ),
-                        onTap: () => launch(asset.page),
-                      ),
-                      Row(
-                        children: <Widget>[
-                          Icon(
-                            EvaIcons.twitter,
-                            color: Colors.lightBlue,
-                          ),
-                          InkWell(
-                            child: Text(
-                              'Twitter',
-                              style: BuildUtils.linkTextStyle(
-                                context: context,
-                              ),
-                            ),
-                            onTap: () => launch(
-                                'https://www.twitter.com/${asset.twitter}'),
-                          ),
-                        ],
-                      )
-                    ],
-                  ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: <Widget>[
-                          Text(
-                            '\$${asset.price}',
-                            style: BuildUtils.headerTextStyle(
-                                context, 0.035, FontWeight.bold),
-                          ),
-                          BuildUtils.buildEmptySpaceWidth(context, 0.02),
-                          Text(
-                            '${Asset.valueToText(asset.priceChangePercent)}%',
-                            style: BuildUtils.pnlTextStyle(
-                                context, asset.priceChangePercent > 0, 0.02),
-                          )
-                        ],
-                      ),
-                      BuildUtils.buildEmptySpaceHeight(context, 0.01),
-                      Text('Market Cap',
-                          style: BuildUtils.headerTextStyle(
-                              context, 0.018, FontWeight.bold)),
-                      Text('\$${Asset.valueToText(asset.marketCap + 0.00)}',
-                          style: BuildUtils.headerTextStyle(context, 0.018)),
-                      BuildUtils.buildEmptySpaceHeight(context, 0.01),
-                      Text('Circulating Supply',
-                          style: BuildUtils.headerTextStyle(
-                              context, 0.018, FontWeight.bold)),
-                      Text(
-                          '${Asset.valueToText(asset.circulatingSupply)} / ${asset.maxSupply == null ? '∞' : Asset.valueToText(asset.maxSupply)}',
-                          style: BuildUtils.headerTextStyle(context, 0.018)),
-                    ],
-                  )
-                ],
-              )));
+      return AssetSummaryCard(asset: asset);
     }
     else {
       return Container(

@@ -1,4 +1,4 @@
-package com.ozanbariscem.ez_portfolio
+package com.ozanbariscem.nanascoins
 
 import io.flutter.embedding.android.FlutterActivity
 

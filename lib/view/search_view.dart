@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
-import 'models/Asset.dart';
-import 'models/BuildUtils.dart';
+import '../models/Asset.dart';
+import '../models/BuildUtils.dart';
 
 import 'asset_view.dart';
 
