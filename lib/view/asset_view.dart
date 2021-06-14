@@ -335,7 +335,7 @@ class _AssetView extends State<AssetView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text('${widget.asset.name}')),
+        appBar: null, //AppBar(title: Text('${widget.asset.name}')),
         backgroundColor: BuildUtils.backgroundColor,
         body: Center(
             child: RefreshIndicator(
