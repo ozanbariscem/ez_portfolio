@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Nana\'s Coins',
       theme: ThemeData(
         primarySwatch: BuildUtils.barColor, //red, indigo, deepPurple, blueGrey
         visualDensity: VisualDensity.adaptivePlatformDensity,
@@ -32,16 +32,6 @@ class MyApp extends StatelessWidget {
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -385,7 +375,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             portfolio.assets.isNotEmpty ?
                               portfolioIsNotEmpty() :
                               portfolioIsEmpty() :
-                              [Text('Getting there')],
+                             [Text('Getting there')],
                         ),
                       ),
                     ]))
@@ -396,7 +386,7 @@ class _MyHomePageState extends State<MyHomePage> {
         },
         tooltip: 'Search',
         child: Icon(EvaIcons.search),
-      ):null, // This trailing comma makes auto-formatting nicer for build methods.
+      ) : null,
     );
   }
 }

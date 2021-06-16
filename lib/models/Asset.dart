@@ -6,6 +6,9 @@ import 'package:http/http.dart' as http;
 import 'Kline.dart';
 import 'Language.dart';
 
+// TODO: Make it work with even negative amounts
+// so lets say if the user has sold 1 bitcoin, so if price decreases show profit
+// Widgets already support this but don't forget to make sure
 class Asset {
   String id;
   String symbol;
