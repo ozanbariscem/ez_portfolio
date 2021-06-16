@@ -1,10 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import '../models/Asset.dart';
 import '../models/BuildUtils.dart';
 
-import 'asset_view.dart';
+import '../widget/search_result_card.dart';
+import '../widget/search_card.dart';
 
 class SearchView extends StatefulWidget {
   SearchView({Key key}) : super(key: key);
@@ -32,106 +34,6 @@ class _SearchView extends State<SearchView> {
     setState(() {});
   }
 
-  Future<List> searchFor(String coinName) async {
-    return Asset.assetList.where((element) {
-      return element.name.toLowerCase().contains(coinName.toLowerCase());}).take(5).toList();
-  }
-
-  Widget buildAssetCard(Asset asset) {
-    return InkWell(
-      onTap: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => AssetView(asset: asset)),
-        );
-      },
-      child: Container(
-          height: MediaQuery.of(context).size.height * .06,
-          width: MediaQuery.of(context).size.width * .98,
-          decoration: BuildUtils.buildBoxDecoration(context),
-          child: Padding(
-            padding: EdgeInsets.all(MediaQuery.of(context).size.height * .01),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Row(
-                      children: [
-                        Text('${asset.marketCapRank}',
-                            style: BuildUtils.headerTextStyle(
-                                context, 0.025, FontWeight.bold)),
-                        Text('${asset.name}',
-                            style: BuildUtils.headerTextStyle(context)),
-                      ],
-                    )
-                  ],
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Row(
-                      children: [
-                        Text('\$${asset.price}',
-                            style: BuildUtils.headerTextStyle(context, 0.03, FontWeight.bold),),
-                        Container(
-                          alignment: Alignment.bottomCenter,
-                          child: Text(
-                              '${asset.priceChangePercent != null ? Asset.valueToText(asset.priceChangePercent) : '-'}%',
-                              style: BuildUtils.pnlTextStyle(
-                                  context,
-                                  asset.priceChangePercent != null
-                                      ? asset.priceChangePercent > 0
-                                      : true, 0.02)),
-                        )
-                      ],
-                    )
-                  ],
-                )
-              ],
-            ),
-          )),
-    );
-  }
-
-  Widget buildSearchCard() {
-    return Container(
-      height: MediaQuery.of(context).size.height * .06,
-      width: MediaQuery.of(context).size.width * .98,
-      decoration: BuildUtils.buildBoxDecoration(context),
-        child: Padding(
-        padding: EdgeInsets.all(MediaQuery.of(context).size.height * .01),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-                width: MediaQuery.of(context).size.width * .94,
-                height: MediaQuery.of(context).size.height * .05,
-                child: TextField(
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Coin name',
-                  ),
-                  onChanged: (text){
-                    isSearching = text != "";
-                    if (!isSearching) {
-                      setState(() { });
-                    } else {
-                      searchFor(text).then((result) {
-                        searchResults = result;
-                        setState(() { });
-                      });
-                    }
-                  },
-                )),
-          ],
-        ))
-    );
-  }
-
   Widget buildSearchResult() {
     var coinList = Asset.assetList;
     if (isSearching) {
@@ -148,7 +50,7 @@ class _SearchView extends State<SearchView> {
           children: [
             BuildUtils.buildEmptySpaceHeight(
                 context, 0.002),
-            buildAssetCard(coinList[i]),
+            SearchResultCard(asset: coinList[i]),
             BuildUtils.buildEmptySpaceHeight(
                 context, 0.002)
           ],
@@ -171,7 +73,22 @@ class _SearchView extends State<SearchView> {
                   case ConnectionState.none:
                     return Text('none');
                   case ConnectionState.waiting:
-                    return Center(child: CircularProgressIndicator());
+                    return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CircularProgressIndicator(),
+                            BuildUtils.buildEmptySpaceHeight(context, 0.02),
+                            Text(
+                              'Hold on we are retrieving the data for you',
+                              style: BuildUtils.linkTextStyle(
+                                  context: context,
+                                  fontSize: 0.02,
+                                  fontWeight: FontWeight.bold
+                              )
+                            )
+                          ],
+                        ));
                   case ConnectionState.active:
                     return Text('');
                   case ConnectionState.done:
@@ -183,7 +100,15 @@ class _SearchView extends State<SearchView> {
                           onRefresh: _refresh,
                           child: Column(
                             children: [
-                              buildSearchCard(),
+                              BuildUtils.buildEmptySpaceHeight(context, 0.005),
+                              SearchCard(
+                                onTextChanged: (isSearching, results) {
+                                  setState(() {
+                                    this.isSearching = isSearching;
+                                    this.searchResults = results;
+                                  });
+                                },
+                              ),
                               BuildUtils.buildEmptySpaceHeight(context, 0.005),
                               Container(
                                 height: MediaQuery.of(context).size.height * .82,
