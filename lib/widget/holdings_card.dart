@@ -31,7 +31,8 @@ class _HoldingsCard extends State<HoldingsCard> {
                 style: BuildUtils.headerTextStyle(context, 0.024, FontWeight.bold),
                 maxLines: 1,
               ),
-              BuildUtils.buildEmptySpaceHeight(context),
+              widget.asset.amount != null && widget.asset.amount != 0 ? 
+              BuildUtils.buildEmptySpaceHeight(context, 0.0) : Divider(color: Colors.grey,),
               buildHoldings(context)
             ],
           )

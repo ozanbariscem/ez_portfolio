@@ -50,11 +50,14 @@ class _TradeHistoryCard extends State<TradeHistoryCard> {
       child: Padding(
         padding: EdgeInsets.all(MediaQuery.of(context).size.height * .015),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             buildTopBar(context),
             buildNewTrade(context),
             Divider(color: Colors.grey),
-            buildTradeHistory(context)
+            widget.asset.trades.length > 0 ?
+            buildTradeHistory(context) :
+            buildNoTradeHistory(context)
           ],
         )
       )
@@ -137,6 +140,16 @@ class _TradeHistoryCard extends State<TradeHistoryCard> {
     );
   }
 
+  Widget buildNoTradeHistory(BuildContext context) {
+    return Container(
+      child: AutoSizeText(
+        'You didn\'t take any trades yet.',
+        style: BuildUtils.headerTextStyle(context, 0.02),
+        maxLines: 1,
+      )
+    );
+  }
+
   Widget buildTradeCard(BuildContext context, Trade trade) {
     return Row(
       children: [
@@ -211,7 +224,6 @@ class _TradeHistoryCard extends State<TradeHistoryCard> {
 
   void deleteTrade(Trade trade) {
     widget.asset.trades.remove(trade);
-
     Trade.writeTradesToFile(Portfolio.portfolio);
   }
 }
