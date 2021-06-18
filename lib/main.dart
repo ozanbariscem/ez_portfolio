@@ -2,14 +2,11 @@ import 'dart:async';
 import 'package:eva_icons_flutter/eva_icons_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:pie_chart/pie_chart.dart';
 
-import 'models/Asset.dart';
 import 'models/Portfolio.dart';
 import 'models/Language.dart';
 import 'models/BuildUtils.dart';
 
-import 'view/asset_view.dart';
 import 'view/search_view.dart';
 import 'view/portfolio_view.dart';
 

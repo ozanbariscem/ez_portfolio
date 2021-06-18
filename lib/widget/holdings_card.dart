@@ -32,7 +32,7 @@ class _HoldingsCard extends State<HoldingsCard> {
                 maxLines: 1,
               ),
               widget.asset.amount != null && widget.asset.amount != 0 ? 
-              BuildUtils.buildEmptySpaceHeight(context, 0.0) : Divider(color: Colors.grey,),
+              BuildUtils.buildEmptySpaceHeight(context, 0.01) : Divider(color: Colors.grey,),
               buildHoldings(context)
             ],
           )
@@ -45,9 +45,10 @@ class _HoldingsCard extends State<HoldingsCard> {
     var children = [buildNoHoldingsNotice(context)];
     if (widget.asset.amount != null && widget.asset.amount != 0) {
       children = [
-        buildAmount(context),
-        buildAvgPrice(context),
-        buildPNL(context)
+        totalValue(),
+        buildAmount(),
+        buildAvgPrice(),
+        buildPNL()
       ];
     }
     return Row(
@@ -55,7 +56,31 @@ class _HoldingsCard extends State<HoldingsCard> {
     );
   }
 
-  Widget buildAmount(BuildContext context) {
+  Widget totalValue() {
+    return Expanded(
+        flex: 3,
+        child: Container(
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  AutoSizeText(
+                    'Total in \$',
+                    style: BuildUtils.headerTextStyle(context, 0.02, FontWeight.bold),
+                    maxLines: 1,
+                  ),
+                  Divider(color: Colors.grey),
+                  AutoSizeText(
+                    '${Asset.valueToText(widget.asset.amount * widget.asset.price)}',
+                    style: BuildUtils.headerTextStyle(context, 0.02),
+                    maxLines: 1,
+                  ),
+                ]
+            )
+        )
+    );
+  }
+
+  Widget buildAmount() {
     return Expanded(
         flex: 3,
         child: Container(
@@ -79,7 +104,7 @@ class _HoldingsCard extends State<HoldingsCard> {
     );
   }
 
-  Widget buildAvgPrice(BuildContext context) {
+  Widget buildAvgPrice() {
     return Expanded(
         flex: 3,
         child: Container(
@@ -103,7 +128,7 @@ class _HoldingsCard extends State<HoldingsCard> {
     );
   }
 
-  Widget buildPNL(BuildContext context) {
+  Widget buildPNL() {
     return Expanded(
         flex: 3,
         child: Container(
