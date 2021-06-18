@@ -111,7 +111,7 @@ class _SearchView extends State<SearchView> {
                               ),
                               BuildUtils.buildEmptySpaceHeight(context, 0.005),
                               Container(
-                                height: MediaQuery.of(context).size.height * .82,
+                                height: MediaQuery.of(context).size.height * .8,
                                 // Listview.builder creates items in the list as we scroll down
                                 child : buildSearchResult()
                               )

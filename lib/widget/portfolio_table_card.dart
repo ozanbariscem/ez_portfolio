@@ -64,25 +64,32 @@ class _PortfolioTableCard extends State<PortfolioTableCard> {
       children: [
         Row(
           children: [
-            buildTableHeader(
+            buildTableRowElement(
+              flex: 10,
               text: '${Language.language.map["NAME"]}',
               style: BuildUtils.headerTextStyle(context, 0.02, FontWeight.bold),
+              align: TextAlign.start,
             ),
-            buildTableHeader(
+            buildTableRowElement(
+              flex: 20,
               text: '${Language.language.map["AMOUNT"]}',
               style: BuildUtils.headerTextStyle(context, 0.02, FontWeight.bold),
             ),
-            buildTableHeader(
+            buildTableRowElement(
+              flex: 20,
               text: '${Language.language.map["PRICE"]}',
               style: BuildUtils.headerTextStyle(context, 0.02, FontWeight.bold),
             ),
-            buildTableHeader(
+            buildTableRowElement(
+              flex: 15,
               text: '${Language.language.map["CHANGE"]}',
               style: BuildUtils.headerTextStyle(context, 0.02, FontWeight.bold),
             ),
-            buildTableHeader(
+            buildTableRowElement(
+              flex: 15,
               text: '${Language.language.map["PNL"]}',
               style: BuildUtils.headerTextStyle(context, 0.02, FontWeight.bold),
+              align: TextAlign.end,
             ),
           ],
         ),
@@ -105,18 +112,23 @@ class _PortfolioTableCard extends State<PortfolioTableCard> {
           child: Row(
             children: [
               buildTableRowElement(
+                flex: 10,
                 text: '${data.name.length > 7 ? data.symbol.toUpperCase() : data.name}',
                 style: BuildUtils.headerTextStyle(context, .02),
+                align: TextAlign.start,
               ),
               buildTableRowElement(
+                flex: 20,
                 text: '${Asset.valueToText(data.amount)}',
                 style: BuildUtils.headerTextStyle(context, .02),
               ),
               buildTableRowElement(
+                flex: 20,
                 text: '\$${data.price}',
                 style: BuildUtils.headerTextStyle(context, .02),
               ),
               buildTableRowElement(
+                flex: 15,
                 text: '${Asset.valueToText(data.priceChangePercent)}%',
                 style: BuildUtils.pnlTextStyle(
                     context,
@@ -125,9 +137,11 @@ class _PortfolioTableCard extends State<PortfolioTableCard> {
                     FontWeight.normal),
               ),
               buildTableRowElement(
+                flex: 15,
                 text: '\$${Asset.valueToText(data.pnl)}',
                 style: BuildUtils.pnlTextStyle(context,
                     data.pnl > 0, 0.02, FontWeight.normal),
+                align: TextAlign.end,
               ),
             ],
           ),
@@ -139,28 +153,17 @@ class _PortfolioTableCard extends State<PortfolioTableCard> {
 
   Widget buildTableRowElement(
   {
+    int flex = 1,
     String text,
     TextStyle style,
+    TextAlign align = TextAlign.center
   }) {
     return Expanded(
-      flex: 1,
+      flex: flex,
       child: AutoSizeText(
         text,
         style: style,
-        maxLines: 1,
-      )
-    );
-  }
-
-  Widget buildTableHeader({
-    String text,
-    TextStyle style,
-  }) {
-    return Expanded(
-      flex: 1,
-      child: AutoSizeText(
-        text,
-        style: style,
+        textAlign: align,
         maxLines: 1,
       )
     );
