@@ -1,13 +1,12 @@
 import 'package:nanas_coins/models/Portfolio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:eva_icons_flutter/eva_icons_flutter.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_candlesticks/flutter_candlesticks.dart';
 import 'package:nanas_coins/widget/trade_history_card.dart';
 
 import '../models/Asset.dart';
 import '../models/BuildUtils.dart';
-import '../models/Trade.dart';
 
 import '../widget/asset_summary_card.dart';
 import '../widget/holdings_card.dart';
@@ -110,16 +109,18 @@ class _AssetView extends State<AssetView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text('Graph',
+                AutoSizeText('Graph',
                     style: BuildUtils.headerTextStyle(
-                        context, 0.024, FontWeight.bold)),
+                        context, 0.024, FontWeight.bold),
+                    maxLines: 1,
+                ),
                 BuildUtils.buildEmptySpaceHeight(context, 0.01),
                 Container(
                   height: MediaQuery.of(context).size.height * .22,
                   child: OHLCVGraph(
                     data: widget.asset.kline,
                     enableGridLines: true,
-                    volumeProp: .01,
+                    enableVolume: false,
                     increaseColor: Colors.lightGreen.shade800,
                     decreaseColor: Colors.red.shade800,
                   ),
