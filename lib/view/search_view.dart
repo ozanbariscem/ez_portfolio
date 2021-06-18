@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
 import '../models/Asset.dart';
+import '../models/Language.dart';
 import '../models/BuildUtils.dart';
 
 import '../widget/search_result_card.dart';
@@ -38,7 +39,9 @@ class _SearchView extends State<SearchView> {
     var coinList = Asset.assetList;
     if (isSearching) {
       if (searchResults.length == 0)
-        return Text('Couldnt find coin with given name.');
+        return Text(
+          Language.language.map["SEARCH_NOT_FOUND"],
+          style: BuildUtils.headerTextStyle(context),);
       else
         coinList = searchResults;
     }
@@ -62,7 +65,7 @@ class _SearchView extends State<SearchView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Search')),
+      appBar: AppBar(title: Text(Language.language.map["SEARCH"])),
       resizeToAvoidBottomInset: false,
       backgroundColor: BuildUtils.backgroundColor,
       body: Center(
@@ -80,7 +83,7 @@ class _SearchView extends State<SearchView> {
                             CircularProgressIndicator(),
                             BuildUtils.buildEmptySpaceHeight(context, 0.02),
                             Text(
-                              'Hold on we are retrieving the data for you',
+                              Language.language.map["SEARCH_WAIT"],
                               style: BuildUtils.linkTextStyle(
                                   context: context,
                                   fontSize: 0.02,

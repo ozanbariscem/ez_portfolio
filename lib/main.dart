@@ -54,9 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
     portfolio.getPortfolio().then((value) {
       gotPortfolio = value;
       if (gotPortfolio) {
-        print('Got portfolio');
         portfolio.getAssetData().then((value) {
-          print('Got data');
           gotData = value;
           if (value)
             setState(() {});

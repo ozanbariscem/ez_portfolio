@@ -58,12 +58,12 @@ class _PortfolioView extends State<PortfolioView> {
     return [
       BuildUtils.buildEmptySpaceHeight(context, 0.005),
       Text(
-        'Your portfolio is empty.',
+        '${Language.language.map["PORTFOLIO_EMPTY"]}',
         style: BuildUtils.headerTextStyle(context),
       ),
       BuildUtils.buildEmptySpaceHeight(context, 0.8),
       Text(
-        'Search for coins to add to your portfolio. ->',
+        '${Language.language.map["PORTFOLIO_EMPTY_HELP"]}',
         style: BuildUtils.headerTextStyle(context, 0.015),
       ),
       BuildUtils.buildEmptySpaceHeight(context, 0.05),

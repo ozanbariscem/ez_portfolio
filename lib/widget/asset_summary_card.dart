@@ -5,6 +5,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../models/Asset.dart';
+import '../models/Language.dart';
 import '../models/BuildUtils.dart';
 
 class AssetSummaryCard extends StatefulWidget {
@@ -71,10 +72,11 @@ class _AssetSummaryCard extends State<AssetSummaryCard> {
                   Row(
                     children: [
                       Container(
-                        width: MediaQuery.of(context).size.height * .06,
+                        width: MediaQuery.of(context).size.height * .07,
                         child: AutoSizeText(
-                          'Rank #${widget.asset.marketCapRank}',
+                          '${Language.language.map["RANK"]} #${widget.asset.marketCapRank}',
                           style: BuildUtils.headerTextStyle(context, 0.015),
+                          minFontSize: 5,
                           maxLines: 1,
                         )
                       )
@@ -152,7 +154,7 @@ class _AssetSummaryCard extends State<AssetSummaryCard> {
               ),
               InkWell(
                 child: AutoSizeText(
-                  'Website',
+                  '${Language.language.map["WEBSITE"]}',
                   style: BuildUtils.linkTextStyle(context: context),
                   maxLines: 1,
                 ),
@@ -188,7 +190,7 @@ class _AssetSummaryCard extends State<AssetSummaryCard> {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           AutoSizeText(
-            'Market Cap',
+            '${Language.language.map["MARKET_CAP"]}',
             style: BuildUtils.headerTextStyle(context, 0.018, FontWeight.bold),
             maxLines: 1,
           ),
@@ -199,7 +201,7 @@ class _AssetSummaryCard extends State<AssetSummaryCard> {
           ),
           BuildUtils.buildEmptySpaceHeight(context, 0.01),
           AutoSizeText(
-            'Circulating Supply',
+            '${Language.language.map["CIRCULATING_SUPPLY"]}',
             style: BuildUtils.headerTextStyle(context, 0.018, FontWeight.bold),
             maxLines: 1,
           ),

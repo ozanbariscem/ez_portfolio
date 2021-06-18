@@ -5,6 +5,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 
 import '../models/Asset.dart';
 import '../models/Trade.dart';
+import '../models/Language.dart';
 import '../models/Portfolio.dart';
 import '../models/BuildUtils.dart';
 import '../widget/new_trade_card.dart';
@@ -71,7 +72,7 @@ class _TradeHistoryCard extends State<TradeHistoryCard> {
           flex: 9,
           child: Container(
             child: AutoSizeText(
-              'Trade History',
+              '${Language.language.map["TRADE_HISTORY"]}',
               style: BuildUtils.headerTextStyle(context, 0.024, FontWeight.bold),
               maxLines: 1,
             )
@@ -143,7 +144,7 @@ class _TradeHistoryCard extends State<TradeHistoryCard> {
   Widget buildNoTradeHistory(BuildContext context) {
     return Container(
       child: AutoSizeText(
-        'You didn\'t take any trades yet.',
+        '${Language.language.map["NO_TRADE"]}',
         style: BuildUtils.headerTextStyle(context, 0.02),
         maxLines: 1,
       )
@@ -157,7 +158,7 @@ class _TradeHistoryCard extends State<TradeHistoryCard> {
           flex: 25,
           child: Container(
             child: AutoSizeText(
-              trade.amount >= 0 ? 'Bought' : 'Sold',
+              trade.amount >= 0 ? '${Language.language.map["BOUGHT"]}' : '${Language.language.map["SOLD"]}',
               style: BuildUtils.pnlTextStyle(context, trade.amount >= 0, 0.02),
               maxLines: 1,
             )
@@ -175,12 +176,13 @@ class _TradeHistoryCard extends State<TradeHistoryCard> {
           ),
         ),
         Expanded(
-          flex: 5,
+          flex: 10,
           child: Container(
             child: AutoSizeText(
-              'at',
+              '${Language.language.map["AT"]}',
               style: BuildUtils.pnlTextStyle(context, trade.amount >= 0, 0.02),
               textAlign: TextAlign.center,
+              minFontSize: 5,
               maxLines: 1,
             )
           ),

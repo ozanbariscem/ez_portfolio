@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
 import '../models/Asset.dart';
+import '../models/Language.dart';
 import '../models/BuildUtils.dart';
 
 class HoldingsCard extends StatefulWidget {
@@ -27,7 +28,7 @@ class _HoldingsCard extends State<HoldingsCard> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AutoSizeText(
-                'Your Holdings',
+                '${Language.language.map["YOUR_HOLDINGS"]}',
                 style: BuildUtils.headerTextStyle(context, 0.024, FontWeight.bold),
                 maxLines: 1,
               ),
@@ -64,7 +65,7 @@ class _HoldingsCard extends State<HoldingsCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   AutoSizeText(
-                    'Total in \$',
+                    '${Language.language.map["TOTAL_IN_DOLLARS"]}',
                     style: BuildUtils.headerTextStyle(context, 0.02, FontWeight.bold),
                     maxLines: 1,
                   ),
@@ -88,7 +89,7 @@ class _HoldingsCard extends State<HoldingsCard> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   AutoSizeText(
-                    'Amount',
+                    '${Language.language.map["AMOUNT"]}',
                     style: BuildUtils.headerTextStyle(context, 0.02, FontWeight.bold),
                     maxLines: 1,
                   ),
@@ -112,7 +113,7 @@ class _HoldingsCard extends State<HoldingsCard> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   AutoSizeText(
-                    'Avg. Price',
+                    '${Language.language.map["AVG_PRICE"]}',
                     style: BuildUtils.headerTextStyle(context, 0.02, FontWeight.bold),
                     maxLines: 1,
                   ),
@@ -136,7 +137,7 @@ class _HoldingsCard extends State<HoldingsCard> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   AutoSizeText(
-                    'PNL',
+                    '${Language.language.map["PNL"]}',
                     style: BuildUtils.headerTextStyle(context, 0.02, FontWeight.bold),
                     maxLines: 1,
                   ),
@@ -157,7 +158,7 @@ class _HoldingsCard extends State<HoldingsCard> {
       flex: 1,
       child: Container(
         child: AutoSizeText(
-          "You don't have any ${widget.asset.name}.",
+          '${Language.language.map["NO_HOLDINGS"]}',
           style: BuildUtils.headerTextStyle(context, 0.02),
           maxLines: 1,
         ),

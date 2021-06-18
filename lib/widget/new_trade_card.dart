@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import '../models/Asset.dart';
 import '../models/Trade.dart';
+import '../models/Language.dart';
 import '../models/Portfolio.dart';
 import '../models/BuildUtils.dart';
 
@@ -49,7 +50,7 @@ class _NewTradeCard extends State<NewTradeCard> {
               focusNode: widget.amountEditFocus,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                labelText: 'Amount',
+                labelText: '${Language.language.map["AMOUNT"]}',
               ),
             )),
         Container(
@@ -60,7 +61,7 @@ class _NewTradeCard extends State<NewTradeCard> {
               controller: widget.priceEditController,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                labelText: 'Price',
+                labelText: '${Language.language.map["PRICE"]}',
               ),
             )),
         ElevatedButton(
@@ -73,7 +74,7 @@ class _NewTradeCard extends State<NewTradeCard> {
               primary: BuildUtils.green,
             ),
             child: Text(
-              'Buy',
+              '${Language.language.map["BUY"]}',
               style: BuildUtils.elevatedButtonTextStyle(context: context),
             )),
         ElevatedButton(
@@ -86,7 +87,7 @@ class _NewTradeCard extends State<NewTradeCard> {
               primary: BuildUtils.red,
             ),
             child: Text(
-              'Sell',
+              '${Language.language.map["SELL"]}',
               style: BuildUtils.elevatedButtonTextStyle(context: context),
             ))
       ],

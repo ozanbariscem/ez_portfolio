@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../models/Asset.dart';
+import '../models/Language.dart';
 import '../models/BuildUtils.dart';
 
 class SearchCard extends StatefulWidget {
@@ -49,7 +50,7 @@ class _SearchCard extends State<SearchCard> {
             child: TextField(
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
-                labelText: 'Coin name or symbol',
+                labelText: Language.language.map["SEARCH_TIP"],
               ),
               onChanged: (text) {
                 isSearching = text != "";
