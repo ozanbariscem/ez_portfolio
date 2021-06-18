@@ -40,9 +40,7 @@ class Language {
     "PORTFOLIO_EMPTY": "Portfolyonda henüz bir coin yok",
     "PORTFOLIO_EMPTY_HELP": "Portfolyona eklemek için coin ara. ->",
 
-    "DISCLAIMER": "2021, Ozan Barış CEM"
-        "\nApp icon by Laura Reen, provided with CC 4.0 license."
-        "\nhttps://dribbble.com/laurareen"
+    "CREDITS": "Credits",
   };
 
   static const Map<String, String> ENGLISH = {
@@ -87,9 +85,7 @@ class Language {
     "PORTFOLIO_EMPTY": "Your portfolio is empty.",
     "PORTFOLIO_EMPTY_HELP": "Search for coins to add to your portfolio. ->",
 
-    "DISCLAIMER": "2021, Ozan Barış CEM"
-        "\nApp icon by Laura Reen, provided with CC 4.0 license."
-        "\nhttps://dribbble.com/laurareen"
+    "CREDITS": "Credits",
   };
 
   static Language language;

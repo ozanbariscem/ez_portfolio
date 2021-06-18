@@ -8,6 +8,7 @@ import 'models/Language.dart';
 import 'models/BuildUtils.dart';
 
 import 'view/search_view.dart';
+import 'view/credits_view.dart';
 import 'view/portfolio_view.dart';
 
 void main() {
@@ -46,7 +47,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    language = Language.changeLanguage(Language.TURKISH);
+    language = Language.changeLanguage(Language.ENGLISH);
     gotPortfolio = false;
     gotData = false;
 
@@ -95,16 +96,21 @@ class _MyHomePageState extends State<MyHomePage> {
   }
   Widget appBar(BuildContext context, String title) {
     return Center(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset('images/icon.png',
-            width: MediaQuery.of(context).size.height * .05,
-            height: MediaQuery.of(context).size.height * .05),
-          BuildUtils.buildEmptySpaceWidth(context, 0.02),
-          Text(title)
-        ],
-      ),
+      child: InkWell(
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => CreditsView()),);
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset('images/icon.png',
+                width: MediaQuery.of(context).size.height * .05,
+                height: MediaQuery.of(context).size.height * .05),
+            BuildUtils.buildEmptySpaceWidth(context, 0.02),
+            Text(title)
+          ],
+        )
+      )
     );
   }
 

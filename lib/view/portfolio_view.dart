@@ -67,11 +67,6 @@ class _PortfolioView extends State<PortfolioView> {
         style: BuildUtils.headerTextStyle(context, 0.015),
       ),
       BuildUtils.buildEmptySpaceHeight(context, 0.05),
-      Text(
-        '${language.map["DISCLAIMER"]}',
-        style: BuildUtils.headerTextStyle(context),
-      ),
-      BuildUtils.buildEmptySpaceHeight(context, 0.05),
     ];
   }
 
@@ -90,12 +85,6 @@ class _PortfolioView extends State<PortfolioView> {
       // PORTFOLIO TABLE
       PortfolioTableCard(portfolio: widget.portfolio),
       BuildUtils.buildEmptySpaceHeight(context, 0.005),
-
-      Text(
-        '${language.map["DISCLAIMER"]}',
-        style: BuildUtils.headerTextStyle(context),
-      ),
-      BuildUtils.buildEmptySpaceHeight(context, 0.05),
     ];
   }
 }
