@@ -41,7 +41,7 @@ class _PortfolioAllocationCard extends State<PortfolioAllocationCard> {
               chartRadius: MediaQuery.of(context).size.height * .2,
               chartType: ChartType.disc,
               chartValuesOptions: ChartValuesOptions(
-                showChartValuesOutside: false,
+                showChartValues: false
               ),
               legendOptions: LegendOptions(
                 legendTextStyle: BuildUtils.headerTextStyle(context),

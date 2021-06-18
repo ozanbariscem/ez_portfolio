@@ -136,7 +136,25 @@ class _CreditsView extends State<CreditsView> {
                   child: Column(
                     children: [
                       AutoSizeText(
-                          'Made by',
+                          'DATA',
+                          style: BuildUtils.headerTextStyle(context)
+                      ),
+                      Divider(color: Colors.grey,),
+                      InkWell(
+                          onTap: () { launch('https://www.coingecko.com/en'); },
+                          child: AutoSizeText('Coin Gecko',
+                            style: BuildUtils.linkTextStyle(context: context),
+                          )
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width/2,
+                  child: Column(
+                    children: [
+                      AutoSizeText(
+                          'MADE BY',
                           style: BuildUtils.headerTextStyle(context)
                       ),
                       Divider(color: Colors.grey,),
