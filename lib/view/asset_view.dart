@@ -52,7 +52,7 @@ class _AssetView extends State<AssetView> {
       gotData = true;
       setState(() {});
     });
-    widget.asset.getKlines('1d', 30).then((value) {
+    widget.asset.getKlines('1').then((value) {
       if (!mounted) {
         return;
       }
@@ -72,7 +72,7 @@ class _AssetView extends State<AssetView> {
       gotData = true;
       setState(() {});
     });
-    widget.asset.getKlines('1d', 30).then((value) {
+    widget.asset.getKlines('1').then((value) {
       if (!mounted) {
         return;
       }
@@ -119,7 +119,7 @@ class _AssetView extends State<AssetView> {
                   child: OHLCVGraph(
                     data: widget.asset.kline,
                     enableGridLines: true,
-                    volumeProp: 0,
+                    volumeProp: .01,
                     increaseColor: Colors.lightGreen.shade800,
                     decreaseColor: Colors.red.shade800,
                   ),

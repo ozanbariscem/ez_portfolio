@@ -167,16 +167,12 @@ class Asset {
     }
   }
 
-  Future<bool> getKlines(String interval, int limit) async {
-    var url = Uri.https('api.binance.com', '/api/v3/klines', {
-      'symbol': '${symbol.toUpperCase()}USDT',
-      'interval': '$interval',
-      'limit': '$limit'
+  Future<bool> getKlines(String days) async {
+    var url = Uri.https('api.coingecko.com', 'api/v3/coins/$id/ohlc', {
+      'vs_currency': 'usd',
+      'days': '$days'
     });
 
-    //var url = Uri.https('api.binance.com', '/api/v3/klines?symbol=${symbol.toUpperCase()}USDT&interval=$interval&limit=$limit');
-    if (symbol == 'USDT')
-      url = Uri.https('api.binance.com', '/api/v3/klines?symbol=BUSDUSDT&interval=$interval&limit=$limit');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
