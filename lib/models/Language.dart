@@ -40,6 +40,9 @@ class Language {
     "PORTFOLIO_EMPTY": "Portfolyonda henüz bir coin yok",
     "PORTFOLIO_EMPTY_HELP": "Portfolyona eklemek için coin ara. ->",
 
+    "LAST": "Son",
+    "DAY": "gün",
+
     "CREDITS": "Credits",
   };
 
@@ -84,6 +87,9 @@ class Language {
 
     "PORTFOLIO_EMPTY": "Your portfolio is empty.",
     "PORTFOLIO_EMPTY_HELP": "Search for coins to add to your portfolio. ->",
+
+    "LAST": "Last",
+    "DAY": "days",
 
     "CREDITS": "Credits",
   };

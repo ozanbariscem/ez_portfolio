@@ -167,7 +167,7 @@ class Asset {
     }
   }
 
-  Future<bool> getKlines(String days) async {
+  Future<bool> getKlines(int days) async {
     var url = Uri.https('api.coingecko.com', 'api/v3/coins/$id/ohlc', {
       'vs_currency': 'usd',
       'days': '$days'

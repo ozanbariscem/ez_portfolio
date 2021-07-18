@@ -1,3 +1,4 @@
+import 'package:nanas_coins/models/Language.dart';
 import 'package:nanas_coins/models/Portfolio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:auto_size_text/auto_size_text.dart';
@@ -25,6 +26,8 @@ class _AssetView extends State<AssetView> {
   TextEditingController _amountEditController;
   FocusNode _amountEditFocus;
 
+  int getKLineDays = 180;
+
   bool gotData;
   bool gotKline;
 
@@ -51,7 +54,7 @@ class _AssetView extends State<AssetView> {
       gotData = true;
       setState(() {});
     });
-    widget.asset.getKlines('1').then((value) {
+    widget.asset.getKlines(getKLineDays).then((value) {
       if (!mounted) {
         return;
       }
@@ -71,7 +74,7 @@ class _AssetView extends State<AssetView> {
       gotData = true;
       setState(() {});
     });
-    widget.asset.getKlines('1').then((value) {
+    widget.asset.getKlines(getKLineDays).then((value) {
       if (!mounted) {
         return;
       }
@@ -109,10 +112,23 @@ class _AssetView extends State<AssetView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                AutoSizeText('Graph',
-                    style: BuildUtils.headerTextStyle(
-                        context, 0.024, FontWeight.bold),
-                    maxLines: 1,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    AutoSizeText('Graph',
+                      style: BuildUtils.headerTextStyle(
+                        context, 0.024, FontWeight.bold
+                      ),
+                      maxLines: 1,
+                    ),
+                    AutoSizeText(
+                      '${Language.language.map["LAST"]} $getKLineDays ${Language.language.map["DAY"]}',
+                      style: BuildUtils.headerTextStyle(
+                        context, 0.012, FontWeight.normal
+                      ),
+                      maxLines: 1,
+                    ),
+                  ],
                 ),
                 BuildUtils.buildEmptySpaceHeight(context, 0.01),
                 Container(
