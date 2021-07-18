@@ -59,6 +59,7 @@ class _SearchCard extends State<SearchCard> {
                 }
                 else {
                   searchFor(text).then((result) {
+                    result = result.take(5).toList();
                     widget.onTextChanged?.call(isSearching, result);
                   }
                   );
@@ -81,13 +82,21 @@ class _SearchCard extends State<SearchCard> {
     );
   }
 
-  Future<List> searchFor(String coinName) async {
-    return Asset.assetList
+  Future<List> searchFor(String search) async {
+    List list = Asset.assetList
         .where((element) {
-          return element.name.toLowerCase().contains(coinName.toLowerCase()) ||
-              element.symbol.toLowerCase().contains(coinName.toLowerCase());
+          return element["name"].toLowerCase().startsWith(search.toLowerCase()) ||
+                 element["symbol"].toLowerCase().startsWith(search.toLowerCase());
         })
-        .take(5)
+        // 50 seems like the best bet right now
+        // Later on we only display the top 5 results
+        .take(50)
+        .map((e) { return e["id"]; })
         .toList();
+    print(search);
+    if (list.isEmpty) return [];
+
+    // api returns data in market_cap descending order
+    return await Asset.getSimpleData(list);
   }
 }

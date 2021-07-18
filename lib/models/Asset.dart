@@ -86,21 +86,15 @@ class Asset {
     trades = [];
   }
 
-  static List<Asset> assetList;
+  static List assetList;
 
-  static Future<bool> getCoinsList(int limit) async {
-    List<Asset> assets = [];
-    int page = 1;
-    int perPage = 250;
-
-    for (int i = 0; i < limit; i+=perPage) {
-      List<Asset> _assets = await getCoinsPage(perPage, page);
-      assets.addAll(_assets);
-      page++;
+  static Future<List> getEveryCoin() async {
+    var url = Uri.https('api.coingecko.com', 'api/v3/coins/list');
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      assetList = jsonDecode(response.body);
     }
-
-    assetList = assets;
-    return true;
+    return assetList;
   }
 
   static Future<List<Asset>> getCoinsPage(int perPage, int page) async {
@@ -153,8 +147,8 @@ class Asset {
         this.description = json['description'][Language.language.map["en"]];
 
       this.marketCapRank = json['market_cap_rank'];
-      this.price = double.parse(json['market_data']['current_price']['usd'].toString());
-      this.marketCap = json['market_data']['market_cap']['usd'];
+      this.price = json['market_data']['current_price']['usd'].toDouble();
+      this.marketCap = json['market_data']['market_cap']['usd'].toInt();
       this.priceChangePercent = json['market_data']['price_change_percentage_24h'];
 
       this.totalSupply = json['market_data']['total_supply'];
@@ -162,6 +156,36 @@ class Asset {
       this.circulatingSupply = json['market_data']['circulating_supply'];
 
       return true;
+    } else {
+      throw Exception('Failed to get asset data.');
+    }
+  }
+
+  static Future<List<Asset>> getSimpleData(List ids) async {
+    var url = Uri.https('api.coingecko.com', 'api/v3/coins/markets', {
+      'ids': ids.join(','),
+      'vs_currency': 'usd',
+      'order': 'market_cap_desc'
+    });
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      List<dynamic> json = jsonDecode(response.body);
+      List<Asset> list = [];
+
+      json.forEach((v) {
+        list.add(Asset(
+          id: v["id"],
+          symbol: v["symbol"],
+          name: v["name"],
+          price: v["current_price"]?.toDouble(),
+          image: v["image"],
+          marketCapRank: v["market_cap_rank"],
+          priceChangePercent: v["price_change_percentage_24h"],
+        ));
+      });
+
+      return list;
     } else {
       throw Exception('Failed to get asset data.');
     }

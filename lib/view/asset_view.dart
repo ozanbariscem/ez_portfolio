@@ -22,10 +22,6 @@ class AssetView extends StatefulWidget {
 }
 
 class _AssetView extends State<AssetView> {
-  TextEditingController _priceEditController;
-  TextEditingController _amountEditController;
-  FocusNode _amountEditFocus;
-
   int getKLineDays = 180;
 
   bool gotData;
@@ -36,9 +32,6 @@ class _AssetView extends State<AssetView> {
   @override
   void initState() {
     super.initState();
-    _priceEditController = new TextEditingController(text: '');
-    _amountEditController = new TextEditingController(text: '');
-    _amountEditFocus = FocusNode();
 
     gotData = false;
     gotKline = false;

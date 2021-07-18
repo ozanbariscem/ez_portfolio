@@ -93,7 +93,7 @@ class Portfolio {
 
     // TODO: Optimize this by using Maps in assetList
     // Turns out using maps is the same as using singleWhere
-    Asset asset = Asset.assetList.singleWhere((element) => element.id == id);
+    Asset asset = Asset.assetList.singleWhere((element) => element["id"] == id);
     portfolio.assets[id] = asset;
   }
 

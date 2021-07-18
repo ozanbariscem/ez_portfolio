@@ -17,26 +17,58 @@ class SearchView extends StatefulWidget {
 }
 
 class _SearchView extends State<SearchView> {
-  Future<bool> gotData;
-  List searchResults;
-  bool isSearching;
+  ScrollController scrollController;
+
+  bool gotData = false;
+  List assetList = [];
+  List searchResults = [];
+  bool isSearching = false;
+
+  int pageNumber = 1;
 
   @override
   void initState() {
     super.initState();
-    searchResults = [];
-    isSearching = false;
-    // TODO: Add pagination
-    gotData = Asset.getCoinsList(2000);
+    scrollController = new ScrollController()..addListener(scrollListener);
+
+    if (Asset.assetList == null || Asset.assetList.length <= 0) {
+      Asset.getEveryCoin().then((value) {
+        getAssetList();
+      });
+    } else {
+      getAssetList();
+    }
   }
 
   Future<void> _refresh() async {
-    await Asset.getCoinsList(2000);
-    setState(() {});
+    pageNumber = 1;
+    assetList = [];
+    getAssetList();
+  }
+
+  void getAssetList() {
+    Asset.getCoinsPage(20, pageNumber).then((value) {
+      setState(() {
+          gotData = true;
+          assetList.addAll(value);
+        }
+      );
+    });
+  }
+
+  void scrollListener() {
+    if (scrollController.position.maxScrollExtent == scrollController.offset) {
+      // Gets till first 100
+      // TODO: Change to total number of coins on coingecko
+      if (assetList.length != Asset.assetList.length) {
+        pageNumber++;
+        getAssetList();
+      }
+    }
   }
 
   Widget buildSearchResult() {
-    var coinList = Asset.assetList;
+    var coinList = assetList;
     if (isSearching) {
       if (searchResults.length == 0)
         return Text(
@@ -47,6 +79,7 @@ class _SearchView extends State<SearchView> {
     }
     return ListView.builder(
       itemCount: coinList.length,
+      controller: scrollController,
       itemBuilder: (context, i) {
         return Column(
           mainAxisSize: MainAxisSize.min,
@@ -62,6 +95,49 @@ class _SearchView extends State<SearchView> {
     );
   }
 
+  Widget buildList() {
+    return RefreshIndicator(
+        onRefresh: _refresh,
+        child: Column(
+          children: [
+            BuildUtils.buildEmptySpaceHeight(context, 0.005),
+            SearchCard(
+              onTextChanged: (isSearching, results) {
+                setState(() {
+                  this.isSearching = isSearching;
+                  this.searchResults = results;
+                });
+              },
+            ),
+            BuildUtils.buildEmptySpaceHeight(context, 0.005),
+            Container(
+                height: MediaQuery.of(context).size.height * .8,
+                // Listview.builder creates items in the list as we scroll down
+                child : buildSearchResult()
+            )
+          ],
+        ));
+  }
+
+  Widget buildWait() {
+    return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(),
+            BuildUtils.buildEmptySpaceHeight(context, 0.02),
+            Text(
+                Language.language.map["SEARCH_WAIT"],
+                style: BuildUtils.linkTextStyle(
+                    context: context,
+                    fontSize: 0.02,
+                    fontWeight: FontWeight.bold
+                )
+            )
+          ],
+        ));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,61 +145,9 @@ class _SearchView extends State<SearchView> {
       resizeToAvoidBottomInset: false,
       backgroundColor: BuildUtils.backgroundColor,
       body: Center(
-          child: FutureBuilder<bool>(
-              future: gotData,
-              builder: (context, AsyncSnapshot<bool> snapshot) {
-                switch (snapshot.connectionState) {
-                  case ConnectionState.none:
-                    return Text('none');
-                  case ConnectionState.waiting:
-                    return Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CircularProgressIndicator(),
-                            BuildUtils.buildEmptySpaceHeight(context, 0.02),
-                            Text(
-                              Language.language.map["SEARCH_WAIT"],
-                              style: BuildUtils.linkTextStyle(
-                                  context: context,
-                                  fontSize: 0.02,
-                                  fontWeight: FontWeight.bold
-                              )
-                            )
-                          ],
-                        ));
-                  case ConnectionState.active:
-                    return Text('');
-                  case ConnectionState.done:
-                    if (snapshot.hasError) {
-                      return Text('${snapshot.error}',
-                          style: TextStyle(color: Colors.red));
-                    } else {
-                      return RefreshIndicator(
-                          onRefresh: _refresh,
-                          child: Column(
-                            children: [
-                              BuildUtils.buildEmptySpaceHeight(context, 0.005),
-                              SearchCard(
-                                onTextChanged: (isSearching, results) {
-                                  setState(() {
-                                    this.isSearching = isSearching;
-                                    this.searchResults = results;
-                                  });
-                                },
-                              ),
-                              BuildUtils.buildEmptySpaceHeight(context, 0.005),
-                              Container(
-                                height: MediaQuery.of(context).size.height * .8,
-                                // Listview.builder creates items in the list as we scroll down
-                                child : buildSearchResult()
-                              )
-                            ],
-                          ));
-                    }
-                }
-                return CircularProgressIndicator();
-              })),
+          child:
+          gotData ? buildList() : buildWait()
+      ),
     );
   }
 }
