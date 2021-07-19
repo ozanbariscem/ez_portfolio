@@ -114,7 +114,7 @@ class _NewTradeCard extends State<NewTradeCard> {
         asset.trades = Portfolio.portfolio.trades[asset.id];
       }
       Portfolio.portfolio.trades[asset.id].add(trade);
-      Portfolio.portfolio.setAssetFromTrades(asset.id);
+      Portfolio.portfolio.assets[asset.id] = asset;
 
       Trade.writeTradesToFile(Portfolio.portfolio);
     } else {

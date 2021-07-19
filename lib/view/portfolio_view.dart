@@ -45,7 +45,7 @@ class _PortfolioView extends State<PortfolioView> {
                 Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    children: widget.portfolio.assets.isNotEmpty ?
+                    children: widget.portfolio.hasValue() ?
                       portfolioIsNotEmpty() :
                       portfolioIsEmpty()
                   ),

@@ -77,6 +77,17 @@ class Portfolio {
     trades = {};
   }
 
+  bool hasValue() {
+    if (assets.isNotEmpty) {
+      assets.forEach((key, value) {
+        if (value.amount != 0)
+          return true;
+      });
+    }
+
+    return false;
+  }
+
   void setAssetsFromTrades() {
     trades.forEach((key, value) {
       setAssetFromTrades(key);
@@ -91,10 +102,9 @@ class Portfolio {
       return;
     }
 
-    // TODO: Optimize this by using Maps in assetList
-    // Turns out using maps is the same as using singleWhere
-    Asset asset = Asset.assetList.singleWhere((element) => element["id"] == id);
-    portfolio.assets[id] = asset;
+    portfolio.assets[id] = Asset(
+      id: id
+    );
   }
 
   Future<bool> getPortfolio() async {

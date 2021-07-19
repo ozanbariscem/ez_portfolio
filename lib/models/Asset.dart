@@ -208,6 +208,9 @@ class Asset {
   }
 
   static String valueToText(double value) {
+    if (value.isNaN || value.isInfinite)
+      return '';
+
     return NumberFormat.compactCurrency(
       decimalDigits: 2,
       symbol: '',
