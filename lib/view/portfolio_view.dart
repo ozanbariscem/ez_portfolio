@@ -23,7 +23,6 @@ class PortfolioView extends StatefulWidget {
 }
 
 class _PortfolioView extends State<PortfolioView> {
-
   Language language;
 
   @override

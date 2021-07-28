@@ -103,7 +103,6 @@ class _SearchView extends State<SearchView> {
   void scrollListener() {
     if (scrollController.position.maxScrollExtent == scrollController.offset) {
       // Gets till first 100
-      // TODO: Change to total number of coins on coingecko
       if (assetList.length != Asset.assetList.length) {
         pageNumber++;
         _loadAds();
