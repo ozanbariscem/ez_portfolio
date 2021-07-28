@@ -9,6 +9,10 @@ import '../models/BuildUtils.dart';
 import '../widget/search_result_card.dart';
 import '../widget/search_card.dart';
 
+import 'package:nanas_coins/models/ad_helper.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+
+
 class SearchView extends StatefulWidget {
   SearchView({Key key}) : super(key: key);
 
@@ -17,6 +21,8 @@ class SearchView extends StatefulWidget {
 }
 
 class _SearchView extends State<SearchView> {
+  List<NativeAd> _ads = [];
+
   ScrollController scrollController;
 
   bool gotData = false;
@@ -29,6 +35,7 @@ class _SearchView extends State<SearchView> {
   @override
   void initState() {
     super.initState();
+    _loadAds();
     scrollController = new ScrollController()..addListener(scrollListener);
 
     if (Asset.assetList == null || Asset.assetList.length <= 0) {
@@ -40,10 +47,47 @@ class _SearchView extends State<SearchView> {
     }
   }
 
+  @override
+  void dispose() {
+    for (int i = 0; i >= 0; i--) {
+      try {
+        _ads[i]?.dispose();
+        _ads[i] = null;
+      } catch (ex) {
+        print("banner dispose error");
+      }
+    }
+    _ads.clear();
+
+    super.dispose();
+  }
+
   Future<void> _refresh() async {
     pageNumber = 1;
     assetList = [];
     getAssetList();
+  }
+
+  void _loadAds({int amount=2}){
+    for (int i = 0; i < amount; i++) {
+      var _ad = NativeAd(
+        adUnitId: AdHelper.nativeAdUnitId,
+        factoryId: 'listTile',
+        request: AdRequest(),
+        listener: NativeAdListener(
+          onAdLoaded: (_) {
+            _ads.add(_);
+            setState(() {
+            });
+          },
+          onAdFailedToLoad: (ad, error) {
+            // Releases an ad resource when it fails to load
+            ad.dispose();
+            print('Ad load failed (code=${error.code} message=${error.message})');       },
+        ),
+      );
+      _ad.load();
+    }
   }
 
   void getAssetList() {
@@ -62,6 +106,7 @@ class _SearchView extends State<SearchView> {
       // TODO: Change to total number of coins on coingecko
       if (assetList.length != Asset.assetList.length) {
         pageNumber++;
+        _loadAds();
         getAssetList();
       }
     }
@@ -77,11 +122,11 @@ class _SearchView extends State<SearchView> {
       else
         coinList = searchResults;
     }
-    return ListView.builder(
+    return ListView.separated(
       itemCount: coinList.length,
       controller: scrollController,
       itemBuilder: (context, i) {
-        return Column(
+          return Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             BuildUtils.buildEmptySpaceHeight(
@@ -91,6 +136,35 @@ class _SearchView extends State<SearchView> {
                 context, 0.002)
           ],
         );
+      },
+      separatorBuilder: (context, i) {
+        // if first statement is false
+        // we don't have anymore loaded ads so we skip
+        // but on load calls setState anyways
+        // so in future the state gets reloaded anyways
+        if (i~/10 < _ads.length && i % 10 == 9 && i != 0) {
+          return Column(
+            children: [
+              BuildUtils.buildEmptySpaceHeight(
+                  context, 0.002),
+              Container(
+                  height: MediaQuery.of(context).size.height * .08,
+                  width: MediaQuery.of(context).size.width * .98,
+                  decoration: BuildUtils.buildBoxDecoration(context),
+                  child: Padding(
+                      padding: EdgeInsets.all(MediaQuery.of(context).size.height * .01),
+                      child: Container(
+                          width: double.infinity,
+                          child: AdWidget(ad: _ads[i~/10])
+                      )
+                  )
+              ),
+              BuildUtils.buildEmptySpaceHeight(
+                  context, 0.002)
+            ],
+          );
+        }
+        return BuildUtils.buildEmptySpaceHeight(context, 0.00001);
       },
     );
   }

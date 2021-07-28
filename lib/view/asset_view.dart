@@ -12,6 +12,9 @@ import '../models/BuildUtils.dart';
 import '../widget/asset_summary_card.dart';
 import '../widget/holdings_card.dart';
 
+import '../models/ad_helper.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+
 class AssetView extends StatefulWidget {
   final Asset asset;
 
@@ -22,6 +25,9 @@ class AssetView extends StatefulWidget {
 }
 
 class _AssetView extends State<AssetView> {
+  bool _isBannerAdReady = false;
+  BannerAd _bannerAd;
+
   int getKLineDays = 180;
 
   bool gotData;
@@ -32,6 +38,7 @@ class _AssetView extends State<AssetView> {
   @override
   void initState() {
     super.initState();
+    _loadAd();
 
     gotData = false;
     gotKline = false;
@@ -54,6 +61,34 @@ class _AssetView extends State<AssetView> {
       gotKline = true;
       setState(() {});
     });
+  }
+
+  @override
+  void dispose() {
+    _bannerAd.dispose();
+
+    super.dispose();
+  }
+
+  void _loadAd() {
+    _bannerAd = BannerAd(
+      adUnitId: AdHelper.bannerAdUnitId,
+      request: AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (_) {
+          setState(() {
+            _isBannerAdReady = true;
+          });
+        },
+        onAdFailedToLoad: (ad, err) {
+          print('Failed to load a banner ad: ${err.message}');
+          _isBannerAdReady = false;
+          ad.dispose();
+        },
+      ),
+    );
+    _bannerAd.load();
   }
 
   Future<void> _refresh() async {
@@ -157,25 +192,30 @@ class _AssetView extends State<AssetView> {
     return Scaffold(
       appBar: AppBar(title: Text('${widget.asset.name}')),
       backgroundColor: BuildUtils.backgroundColor,
+      bottomNavigationBar: Container(
+        width: _bannerAd.size.width.toDouble(),
+        height: _bannerAd.size.height.toDouble(),
+        child: AdWidget(ad: _bannerAd),
+      ),
       body: Center(
         child: RefreshIndicator(
         onRefresh: _refresh,
         child: ListView(
-          children: [
-            BuildUtils.buildEmptySpaceHeight(context),
-            buildSummaryCard(widget.asset),
-            BuildUtils.buildEmptySpaceHeight(context),
-            buildGraphCard(widget.asset),
-            BuildUtils.buildEmptySpaceHeight(context),
-            HoldingsCard(asset: widget.asset),
-            BuildUtils.buildEmptySpaceHeight(context),
-            TradeHistoryCard(
-              asset: widget.asset,
-              onNewTrade: () { setState(() {}); },
-              onTradeDelete: () { setState(() {}); },
-            ),
-          ],
-        ),
+                children: [
+                  BuildUtils.buildEmptySpaceHeight(context),
+                  buildSummaryCard(widget.asset),
+                  BuildUtils.buildEmptySpaceHeight(context),
+                  buildGraphCard(widget.asset),
+                  BuildUtils.buildEmptySpaceHeight(context),
+                  HoldingsCard(asset: widget.asset),
+                  BuildUtils.buildEmptySpaceHeight(context),
+                  TradeHistoryCard(
+                    asset: widget.asset,
+                    onNewTrade: () { setState(() {}); },
+                    onTradeDelete: () { setState(() {}); },
+                  ),
+                ],
+        )
       ))
     );
   }

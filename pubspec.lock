@@ -144,6 +144,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  google_mobile_ads:
+    dependency: "direct main"
+    description:
+      name: google_mobile_ads
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.13.2"
   http:
     dependency: "direct main"
     description:
@@ -269,7 +276,7 @@ packages:
       name: plugin_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.0"
+    version: "2.0.1"
   process:
     dependency: transitive
     description:
@@ -337,7 +344,7 @@ packages:
       name: url_launcher
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.0.6"
+    version: "6.0.9"
   url_launcher_linux:
     dependency: transitive
     description:
@@ -358,7 +365,7 @@ packages:
       name: url_launcher_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.3"
+    version: "2.0.4"
   url_launcher_web:
     dependency: transitive
     description:
@@ -386,7 +393,7 @@ packages:
       name: win32
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.5"
+    version: "2.2.5"
   xdg_directories:
     dependency: transitive
     description:

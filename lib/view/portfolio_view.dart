@@ -23,6 +23,7 @@ class PortfolioView extends StatefulWidget {
 }
 
 class _PortfolioView extends State<PortfolioView> {
+
   Language language;
 
   @override
@@ -61,7 +62,11 @@ class _PortfolioView extends State<PortfolioView> {
         '${Language.language.map["PORTFOLIO_EMPTY"]}',
         style: BuildUtils.headerTextStyle(context),
       ),
-      BuildUtils.buildEmptySpaceHeight(context, 0.8),
+      BuildUtils.buildEmptySpaceHeight(context, 0.25),
+      Image.asset('images/icon.png',
+          width: MediaQuery.of(context).size.height * .3,
+          height: MediaQuery.of(context).size.height * .3),
+      BuildUtils.buildEmptySpaceHeight(context, 0.25),
       Text(
         '${Language.language.map["PORTFOLIO_EMPTY_HELP"]}',
         style: BuildUtils.headerTextStyle(context, 0.015),

@@ -11,7 +11,12 @@ import 'view/search_view.dart';
 import 'view/credits_view.dart';
 import 'view/portfolio_view.dart';
 
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
+
   runApp(MyApp());
 }
 
